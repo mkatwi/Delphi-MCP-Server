@@ -63,7 +63,23 @@ uses
   MCPServer.Tool.SubscriptionSamples in 'Tools\MCPServer.Tool.SubscriptionSamples.pas',
   MCPServer.Resource.Samples in 'Resources\MCPServer.Resource.Samples.pas',
   MCPServer.Prompt.SummarizeLogs in 'Prompts\MCPServer.Prompt.SummarizeLogs.pas',
-  MCPServer.Prompt.ContentSamples in 'Prompts\MCPServer.Prompt.ContentSamples.pas';
+  MCPServer.Prompt.ContentSamples in 'Prompts\MCPServer.Prompt.ContentSamples.pas'
+  {$IFDEF MSWINDOWS}
+  ,
+  MCPServer.DelphiBuild.Types in 'DelphiBuild\MCPServer.DelphiBuild.Types.pas',
+  MCPServer.DelphiBuild.PathResolver in 'DelphiBuild\MCPServer.DelphiBuild.PathResolver.pas',
+  MCPServer.DelphiBuild.Settings in 'DelphiBuild\MCPServer.DelphiBuild.Settings.pas',
+  MCPServer.DelphiBuild.CompilerOutput in 'DelphiBuild\MCPServer.DelphiBuild.CompilerOutput.pas',
+  MCPServer.DelphiBuild.TestOutput in 'DelphiBuild\MCPServer.DelphiBuild.TestOutput.pas',
+  MCPServer.DelphiBuild.ProcessRunner in 'DelphiBuild\MCPServer.DelphiBuild.ProcessRunner.pas',
+  MCPServer.DelphiBuild.Compiler in 'DelphiBuild\MCPServer.DelphiBuild.Compiler.pas',
+  MCPServer.DelphiBuild.TestRunner in 'DelphiBuild\MCPServer.DelphiBuild.TestRunner.pas',
+  MCPServer.DelphiBuild.Registration in 'DelphiBuild\MCPServer.DelphiBuild.Registration.pas',
+  MCPServer.Tool.DelphiBuild.Params in 'Tools\MCPServer.Tool.DelphiBuild.Params.pas',
+  MCPServer.Tool.DelphiBuild in 'Tools\MCPServer.Tool.DelphiBuild.pas',
+  MCPServer.Tool.DelphiRunTests in 'Tools\MCPServer.Tool.DelphiRunTests.pas'
+  {$ENDIF}
+  ;
 
 var
   ShutdownEvent: TEvent;
@@ -152,7 +168,10 @@ begin
     {$ENDIF}
     
     try
-    
+      {$IFDEF MSWINDOWS}
+      TDelphiBuildToolRegistration.RegisterToolsFromServerSettings;
+      {$ENDIF}
+
       RunServer(HasStdioFlag);
 
     except

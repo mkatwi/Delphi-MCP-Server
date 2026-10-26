@@ -179,6 +179,18 @@
         <DCCReference Include="Resources\MCPServer.Resource.Samples.pas"/>
         <DCCReference Include="Prompts\MCPServer.Prompt.SummarizeLogs.pas"/>
         <DCCReference Include="Prompts\MCPServer.Prompt.ContentSamples.pas"/>
+        <DCCReference Include="DelphiBuild\MCPServer.DelphiBuild.Types.pas"/>
+        <DCCReference Include="DelphiBuild\MCPServer.DelphiBuild.PathResolver.pas"/>
+        <DCCReference Include="DelphiBuild\MCPServer.DelphiBuild.Settings.pas"/>
+        <DCCReference Include="DelphiBuild\MCPServer.DelphiBuild.CompilerOutput.pas"/>
+        <DCCReference Include="DelphiBuild\MCPServer.DelphiBuild.TestOutput.pas"/>
+        <DCCReference Include="DelphiBuild\MCPServer.DelphiBuild.ProcessRunner.pas"/>
+        <DCCReference Include="DelphiBuild\MCPServer.DelphiBuild.Compiler.pas"/>
+        <DCCReference Include="DelphiBuild\MCPServer.DelphiBuild.TestRunner.pas"/>
+        <DCCReference Include="Tools\MCPServer.Tool.DelphiBuild.Params.pas"/>
+        <DCCReference Include="Tools\MCPServer.Tool.DelphiBuild.pas"/>
+        <DCCReference Include="Tools\MCPServer.Tool.DelphiRunTests.pas"/>
+        <DCCReference Include="DelphiBuild\MCPServer.DelphiBuild.Registration.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

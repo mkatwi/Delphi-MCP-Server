@@ -1122,6 +1122,12 @@ The Inspector provides a web interface to interact with your MCP server, making 
 - **get_time**: Get the current server time
 - **list_files**: List files in a directory
 - **calculate**: Perform basic arithmetic calculations
+- **delphi_build** (Windows): compile a `.dpr` with `dcc32`/`dcc64` and get every
+  error, warning and hint with code, file and line, plus the executable path; see
+  [Delphi build tools](#delphi-build-tools)
+- **delphi_run_tests** (Windows): build a DUnitX console test project, run it and
+  get the found/passed/failed/errored/leaked counts and every failed test with its
+  message
 - **test_simple_text**, **test_image_content**, **test_audio_content**,
   **test_embedded_resource**, **test_multiple_content_types**,
   **test_error_handling**, **test_tool_with_progress**, **test_logging_tool**:
@@ -1150,6 +1156,39 @@ The Inspector provides a web interface to interact with your MCP server, making 
   of the conformance suite's tasks scenarios, from
   `MCPServer.Tool.TaskSamples`; they run as tasks when `[Tasks] Enabled=1`
   and the client supports the extension
+
+### Delphi build tools
+
+`delphi_build` and `delphi_run_tests` let an MCP client compile Delphi code and run
+its DUnitX suite. They are Windows-only and registered from `MCPServer.dpr` by
+`TDelphiBuildToolRegistration` (`src\DelphiBuild`), not from an `initialization`
+section.
+
+They are **off by default**. A build runs code that is not yours to review (a `.dpr`
+can pull in units from any folder through `in` clauses, `{$I}` and `{$R}`), and
+`delphi_run_tests` runs the result as the server's user. The tools only appear in
+`tools/list` when `settings.ini` next to the executable has `[DelphiBuild]
+Enabled=1` and an `AllowedRoots` list; the server logs which of the two it found.
+
+Arguments: `project` (a `.dpr`), optional `config` (`Debug`/`Release`, default
+`Debug`), `platform` (`Win32`/`Win64`, default `Win32`) and `searchPaths` (extra unit
+folders, `;`-separated). Output goes to `<project folder>\build\<platform>\<config>`;
+Debug compiles with range and overflow checks, Release optimized without them.
+`delphi_run_tests` starts the test executable with `--hidebanner
+--exitbehavior:Continue` and fails the run on a failed or errored test, a DUnitX leak
+count, an `Unexpected Memory Leak` report at shutdown, or zero tests found.
+
+Configuration is the `[DelphiBuild]` section of `settings.ini` (see
+`settings.ini.example`): `Enabled`, `BdsPath`, `AllowedRoots` and `TimeoutSeconds`
+(clamped to 10..3600; a test run gets the limit for its build and again for the run).
+
+Safety: only `.dpr` files and search paths inside `AllowedRoots` are accepted, compared
+after junctions and symbolic links are resolved; the compiler path comes from the
+settings and never from a tool argument. Every process runs without a window, with `NUL`
+as standard input so it cannot read the stdio protocol channel, inherits only its own
+output pipe and that `NUL` handle, and runs in a job object: a timeout stops the whole
+process tree, and closing the job ends anything the build left running. Output is kept
+up to 8 MB, the tail when a process writes more.
 
 ## Available Example Prompts
 

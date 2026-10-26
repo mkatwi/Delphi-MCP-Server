@@ -119,3 +119,20 @@ RootCertFile=
 ; This will create certificates in the certs directory
 
 ; For production, use certificates from a trusted Certificate Authority
+
+[DelphiBuild]
+; The delphi_build and delphi_run_tests tools (Windows only). They compile code and
+; delphi_run_tests runs the built test executable as the server's user, so they are
+; off unless Enabled=1 and AllowedRoots lists at least one folder.
+Enabled=0
+
+; RAD Studio installation that holds bin\dcc32.exe and bin\dcc64.exe
+BdsPath=C:\Program Files (x86)\Embarcadero\Studio\37.0
+
+; Folders the tools may build in, separated by semicolons. A .dpr and every
+; extra search path must lie inside one of them, after junctions and symbolic
+; links are resolved. Example: C:\Projects;D:\Work
+AllowedRoots=
+
+; Time limit for one build or one test run, in seconds (10 to 3600)
+TimeoutSeconds=300
